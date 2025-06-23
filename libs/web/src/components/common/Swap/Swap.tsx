@@ -26,26 +26,25 @@ import {PoolId} from "mira-dex-ts";
 
 import {
   CoinsListModal,
+  CurrencyBox,
+  ExchangeRate,
   SwapSuccessModal,
+  SwapFailureModal,
   Logo,
   IconButton,
   Loader,
   SlippageSetting,
+  SettingsModalContent,
   PriceImpact,
   ConnectWallet,
   triggerClassAnimation
 } from "@/src/components/common";
-
-import SwapFailureModal from "@/src/components/common/Swap/components/SwapFailureModal/SwapFailureModal";
 
 import {
   createPoolKey,
   openNewTab
 } from "@/src/utils/common";
 
-import CurrencyBox from "@/src/components/common/Swap/components/CurrencyBox/CurrencyBox";
-import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
-import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
 import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
 import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
 import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
