@@ -3,7 +3,7 @@ import useSwapData from "./useAssetPair/useSwapData";
 import useAsset from "./useAsset";
 import {useMemo} from "react";
 import {bn} from "fuels";
-import useSwapRouter, {TradeType} from "./useSwapRouter";
+import {useSwapRouter, TradeType} from "./useSwapRouter";
 import useDebounce from "./useDebounce";
 
 const useSwapPreview = (swapState: SwapState, mode: CurrencyBoxMode) => {
