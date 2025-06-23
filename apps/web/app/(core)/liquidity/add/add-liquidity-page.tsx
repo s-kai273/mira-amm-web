@@ -1,22 +1,27 @@
 "use client";
 
-import {useRouter, useSearchParams} from "next/navigation";
 import {useState, useCallback} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {PoolId} from "mira-dex-ts";
+import {ChevronLeft, X} from "lucide-react";
+
 import {createPoolIdFromIdString} from "@/src/utils/common";
 import PreviewAddLiquidityDialog, {
   AddLiquidityPreviewData,
 } from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/PreviewAddLiquidityDialog";
 import AddLiquidityDialog from "@/src/components/pages/add-liquidity-page/components/AddLiquidity/AddLiquidityDialog";
-import {IconButton} from "@/src/components/common";
-import {PoolId} from "mira-dex-ts";
-import {SlippageSetting} from "@/src/components/common";
-import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
+
+import {
+  IconButton,
+  SettingsModalContent,
+  SlippageSetting } from "@/src/components/common";
+
 import {useModal} from "@/src/hooks";
+
 import {
   DefaultSlippageValue,
   SlippageMode,
 } from "@/src/components/common/Swap/Swap";
-import {ChevronLeft, X} from "lucide-react";
 
 export default function AddLiquidityPage() {
   const router = useRouter();
