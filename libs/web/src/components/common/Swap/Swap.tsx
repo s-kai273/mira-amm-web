@@ -137,7 +137,7 @@ const PreviewSummary = memo(function PreviewSummary({
     <div className={summaryBaseClasses}>
       <div className={summaryEntryClasses}>
         <p>Rate</p>
-        {previewLoading || tradeState === TradeState.REEFETCHING ? (
+        {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
         ) : (
           <p>{exchangeRate}</p>
@@ -147,7 +147,7 @@ const PreviewSummary = memo(function PreviewSummary({
       <div className={summaryEntryClasses}>
         <p>Order routing</p>
         <div className={routingLineClasses}>
-          {previewLoading || tradeState === TradeState.REEFETCHING ? (
+          {previewLoading || tradeState === TradeState.REFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
@@ -162,7 +162,7 @@ const PreviewSummary = memo(function PreviewSummary({
 
       <div className={summaryEntryClasses}>
         <p>Estimated fees</p>
-        {previewLoading || tradeState === TradeState.REEFETCHING ? (
+        {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
         ) : (
           <p>
@@ -634,7 +634,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     return (
       (swapDisabled &&
         !previewLoading &&
-        tradeState !== TradeState.REEFETCHING &&
+        tradeState !== TradeState.REFETCHING &&
         !balancesPending &&
         (txCostPending || amountMissing)) ||
       showInsufficientBalance
@@ -652,7 +652,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   const isActionLoading = useMemo(() => {
     return (
       balancesPending ||
-      tradeState === TradeState.REEFETCHING ||
+      tradeState === TradeState.REFETCHING ||
       (previewLoading && swapButtonTitle !== "Insufficient balance") ||
       (!amountMissing && !showInsufficientBalance && txCostPending)
     );
