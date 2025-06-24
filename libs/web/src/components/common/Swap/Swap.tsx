@@ -8,9 +8,7 @@ import {
   useState,
   memo
 } from "react";
-
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
-
 import {clsx} from "clsx";
 
 import {
@@ -19,9 +17,7 @@ import {
   ScriptTransactionRequest,
   TransactionCost,
 } from "fuels";
-
 import {useConnectUI, useIsConnected} from "@fuels/react";
-
 import {PoolId} from "mira-dex-ts";
 
 import {
@@ -41,19 +37,11 @@ import {
 } from "@/src/components/common";
 
 import {
-  createPoolKey,
-  openNewTab
-} from "@/src/utils/common";
-
-import useExchangeRate from "@/src/hooks/useExchangeRate/useExchangeRate";
-import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapState";
-import useCheckActiveNetwork from "@/src/hooks/useCheckActiveNetwork";
-import usePreview from "@/src/hooks/useSwapPreviewV2";
-import useReservesPrice from "@/src/hooks/useReservesPrice";
-
-import {FuelAppUrl} from "@/src/utils/constants";
-
-import {
+  useSwapPreview,
+  useExchangeRate,
+  useInitialSwapState,
+  useCheckActiveNetwork,
+  useReservesPrice,
   useIsClient,
   useAssetMetadata,
   useCheckEthBalance,
@@ -63,7 +51,13 @@ import {
   useAssetImage,
   useAssetPrice,
   TradeState
-} from "@/src/hooks";
+  } from "@/src/hooks";
+
+import {FuelAppUrl} from "@/src/utils/constants";
+import {
+  createPoolKey,
+  openNewTab
+} from "@/src/utils/common";
 
 import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
 import {Button} from "@/meshwave-ui/Button";
@@ -263,7 +257,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     trade,
     tradeState,
     error: previewError,
-  } = usePreview(swapState, activeMode);
+  } = useSwapPreview(swapState, activeMode);
 
   const pools = useMemo(
     () => trade?.bestRoute?.pools.map((p) => p.poolId) ?? [],
