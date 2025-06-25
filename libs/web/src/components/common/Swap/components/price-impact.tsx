@@ -2,7 +2,7 @@ import { FC } from "react";
 import { clsx } from "clsx";
 
 const getPriceImpact = (
-  reservesPrice?: number,
+  reservesPrice?: number | unknown,
   previewPrice?: number
 ): number => {
   if (!reservesPrice || previewPrice === undefined) return -1;
@@ -11,7 +11,7 @@ const getPriceImpact = (
 };
 
 export const PriceImpact: FC<{
-  reservesPrice?: number;
+  reservesPrice?: number | unknown;
   previewPrice?: number;
 }> = ({ reservesPrice, previewPrice }) => {
   const impact = getPriceImpact(reservesPrice, previewPrice);

@@ -10,16 +10,12 @@ import {
 } from "react";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
 
-import {
-  B256Address,
-  bn,
-  ScriptTransactionRequest,
-  TransactionCost,
-} from "fuels";
+import {B256Address, bn, ScriptTransactionRequest, TransactionCost} from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
 
 import {clsx} from "clsx";
+import {Button} from "@/meshwave-ui/Button";
 
 import {
   CoinsListModal,
@@ -54,22 +50,17 @@ import {
   TradeState
   } from "@/src/hooks";
 
-import {FuelAppUrl} from "@/src/utils/constants";
-import {
-  createPoolKey,
-  openNewTab
-} from "@/src/utils/common";
+import { FuelAppUrl } from "@/src/utils/constants";
+import { createPoolKey, openNewTab } from "@/src/utils/common";
 
-import {useAnimationStore} from "@/src/stores/useGlitchScavengerHunt";
-import {Button} from "@/meshwave-ui/Button";
+import { useAnimationStore } from "@/src/stores/useGlitchScavengerHunt";
 
 export type CurrencyBoxMode = "buy" | "sell";
-export type CurrencyBoxState = {assetId: string | null; amount: string};
-type InputsState = Record<CurrencyBoxMode, {amount: string}>;
-export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
 export type SlippageMode = "auto" | "custom";
+export type CurrencyBoxState = {assetId: string | null; amount: string};
+export type SwapState = Record<CurrencyBoxMode, CurrencyBoxState>;
+type InputsState = Record<CurrencyBoxMode, {amount: string}>;
 
-export const DefaultSlippageValue = 100;
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
 const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
@@ -86,7 +77,6 @@ const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
   );
 });
 
-SwapRouteItem.displayName = "SwapRouteItem";
 
 const PreviewSummary = memo(function PreviewSummary({
   previewLoading,
@@ -159,8 +149,6 @@ const PreviewSummary = memo(function PreviewSummary({
   );
 });
 
-PreviewSummary.displayName = "PreviewSummary";
-
 const PriceAndRate = memo(function PriceAndRate({
   reservesPrice,
   previewPrice,
@@ -178,8 +166,6 @@ const PriceAndRate = memo(function PriceAndRate({
   );
 });
 
-PriceAndRate.displayName = "PriceAndRate";
-
 export function Swap({isWidget}: {isWidget?: boolean}){
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
@@ -194,7 +180,7 @@ export function Swap({isWidget}: {isWidget?: boolean}){
   const [inputsState, setInputsState] =
     useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
-  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
+  const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [txCostData, setTxCostData] = useState<{
     tx: ScriptTransactionRequest;
@@ -223,6 +209,7 @@ export function Swap({isWidget}: {isWidget?: boolean}){
       bn(0),
     [balances, swapState.sell.assetId],
   );
+
   const buyBalance = useMemo(
     () =>
       balances?.find((b) => b.assetId === swapState.buy.assetId)?.amount ??
