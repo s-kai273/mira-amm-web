@@ -9,7 +9,6 @@ import {
   memo
 } from "react";
 import {ArrowUpDown, LoaderCircle} from "lucide-react";
-import {clsx} from "clsx";
 
 import {
   B256Address,
@@ -19,6 +18,8 @@ import {
 } from "fuels";
 import {useConnectUI, useIsConnected} from "@fuels/react";
 import {PoolId} from "mira-dex-ts";
+
+import {clsx} from "clsx";
 
 import {
   CoinsListModal,
@@ -736,7 +737,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
           {!isConnected ? (
             <Button
               onClick={connect}
-              loading={isConnecting}
+              loading={isConnecting.toString()}
               variant="secondary"
               size="2xl"
             >
@@ -746,7 +747,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             <Button
               disabled={isActionDisabled}
               onClick={handleSwapClick}
-              loading={isActionLoading}
+              loading={isActionLoading.toString()}
               size="2xl"
             >
               {isActionLoading ? (
