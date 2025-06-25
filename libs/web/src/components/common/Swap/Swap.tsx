@@ -180,8 +180,7 @@ const PriceAndRate = memo(function PriceAndRate({
 
 PriceAndRate.displayName = "PriceAndRate";
 
-const Swap = ({isWidget}: {isWidget?: boolean}) => {
-  // Modal hooks
+export function Swap({isWidget}: {isWidget?: boolean}){
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
@@ -440,7 +439,6 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
   }, [sellValue, buyValue]);
 
   const sufficientEthBalance = useCheckEthBalance(swapState.sell);
-
   const exchangeRate = useExchangeRate(swapState);
 
   const fetchCost = useCallback(async () => {
@@ -780,5 +778,3 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     </>
   );
 };
-
-export default Swap;
