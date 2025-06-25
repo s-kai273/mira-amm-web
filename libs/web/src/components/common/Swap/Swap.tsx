@@ -72,25 +72,6 @@ export type SlippageMode = "auto" | "custom";
 export const DefaultSlippageValue = 100;
 const initialInputsState: InputsState = {sell: {amount: ""}, buy: {amount: ""}};
 
-const swapAndRateClasses = "flex flex-col gap-3 lg:gap-4";
-const swapContainerBaseClasses =
-  "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark";
-const swapContainerWidgetClasses = "bg-background-primary";
-const swapContainerLoadingClasses = "z-[5]";
-const headerBaseClasses =
-  "flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]";
-const headerTitleClasses = "flex-1 text-content-primary";
-const lineSplitterClasses = "relative w-full h-px bg-background-grey-dark my-4";
-const convertButtonClasses =
-  "group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full bg-background-primary text-content-grey hover:text-content-primary";
-const currencyBoxWidgetBg = "bg-background-grey-dark";
-const summaryBaseClasses =
-  "flex flex-col gap-2 text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]";
-const summaryEntryClasses = "flex justify-between";
-const routingLineClasses = "flex flex-wrap items-center gap-1";
-const poolsFeeClasses = "flex items-center gap-1";
-const overlayClasses = "fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]";
-
 const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
   const firstAssetIcon = useAssetImage(pool[0].bits);
   const secondAssetIcon = useAssetImage(pool[1].bits);
@@ -120,17 +101,17 @@ const PreviewSummary = memo(function PreviewSummary({
 }: {
   previewLoading: boolean;
   tradeState: TradeState;
-  exchangeRate: string | undefined;
+  exchangeRate: string | null;
   pools: PoolId[];
   feeValue: string;
-  sellMetadataSymbol: string;
+  sellMetadataSymbol: string| undefined;
   txCost: number | null;
   txCostPending: boolean;
   createPoolKeyFn: (pool: PoolId) => string;
 }) {
   return (
-    <div className={summaryBaseClasses}>
-      <div className={summaryEntryClasses}>
+    <div className="flex flex-col gap-2 text-content-tertiary text-[12px] leading-[16px] lg:text-[13px] lg:leading-[18px]">
+      <div className="flex justify-between">
         <p>Rate</p>
         {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
@@ -139,14 +120,14 @@ const PreviewSummary = memo(function PreviewSummary({
         )}
       </div>
 
-      <div className={summaryEntryClasses}>
+      <div className="flex justify-between">
         <p>Order routing</p>
-        <div className={routingLineClasses}>
+        <div className="flex flex-wrap items-center gap-1">
           {previewLoading || tradeState === TradeState.REFETCHING ? (
             <Loader color="gray" />
           ) : (
             pools.map((pool, i) => (
-              <div className={poolsFeeClasses} key={createPoolKeyFn(pool)}>
+              <div className="flex items-center gap-1" key={createPoolKeyFn(pool)}>
                 <SwapRouteItem pool={pool} />
                 {i !== pools.length - 1 && <span>+</span>}
               </div>
@@ -155,7 +136,7 @@ const PreviewSummary = memo(function PreviewSummary({
         </div>
       </div>
 
-      <div className={summaryEntryClasses}>
+      <div className="flex justify-between">
         <p>Estimated fees</p>
         {previewLoading || tradeState === TradeState.REFETCHING ? (
           <Loader color="gray" />
@@ -166,7 +147,7 @@ const PreviewSummary = memo(function PreviewSummary({
         )}
       </div>
 
-      <div className={summaryEntryClasses}>
+      <div className="flex justify-between">
         <p>Network cost</p>
         {txCostPending ? (
           <Loader color="gray" />
@@ -185,7 +166,7 @@ const PriceAndRate = memo(function PriceAndRate({
   previewPrice,
   swapState,
 }: {
-  reservesPrice: number | undefined;
+  reservesPrice: number | unknown;
   previewPrice: number | undefined;
   swapState: SwapState;
 }) {
@@ -466,7 +447,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
     try {
       const data = await fetchTxCost();
       setTxCostData(data);
-      setTxCost(data?.txCost.gasPrice.toNumber() / 10 ** 9 || null);
+      setTxCost(data?.txCost?.gasPrice?.toNumber() / 10 ** 9 || null);
       setCustomErrorTitle("");
     } catch {
       setCustomErrorTitle("Review failed, please try again");
@@ -663,7 +644,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
   if (!isClient) {
     return (
-      <div className={swapAndRateClasses}>
+      <div className="flex flex-col gap-3 lg:gap-4">
         <Loader color="gray" />
       </div>
     );
@@ -671,16 +652,16 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
 
   return (
     <>
-      <div className={swapAndRateClasses}>
+      <div className="flex flex-col gap-3 lg:gap-4">
         <div
           className={clsx(
-            swapContainerBaseClasses,
-            isWidget && swapContainerWidgetClasses,
-            swapPending && swapContainerLoadingClasses,
+            "flex flex-col gap-4 p-4 pb-[18px] rounded-[10px] bg-background-grey-dark",
+            isWidget && "bg-background-primary",
+            swapPending && 'z-[5]',
           )}
         >
-          <div className={headerBaseClasses}>
-            <div className={headerTitleClasses}>
+          <div className="flex items-center gap-[10px] font-medium text-[16px] leading-[19px] text-content-grey lg:text-[20px] lg:leading-[24px]">
+            <div className="flex-1 text-content-primary">
               {isWidget ? <Logo /> : <p>Swap</p>}
             </div>
             <SlippageSetting
@@ -699,11 +680,11 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             loading={inputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={sellAssetPrice.price}
-            className={isWidget ? currencyBoxWidgetBg : undefined}
+            className={isWidget ? "" : undefined}
           />
 
-          <div className={lineSplitterClasses}>
-            <IconButton className={convertButtonClasses} onClick={swapAssets}>
+          <div className="relative w-full h-px bg-background-grey-dark my-4">
+            <IconButton className="group absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 flex justify-center items-center rounded-full bg-background-primary text-content-grey hover:text-content-primary" onClick={swapAssets}>
               <ArrowUpDown className="transition-transform duration-300 group-hover:rotate-180 text-content-dimmed-dark" />
             </IconButton>
           </div>
@@ -717,7 +698,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
             loading={outputPreviewLoading || swapPending}
             onCoinSelectorClick={handleCoinSelectorClick}
             usdRate={buyAssetPrice.price}
-            className={isWidget ? currencyBoxWidgetBg : undefined}
+            className={isWidget ? "bg-background-grey-dark" : undefined}
           />
 
           {review && (
@@ -766,7 +747,7 @@ const Swap = ({isWidget}: {isWidget?: boolean}) => {
         />
       </div>
 
-      {swapPending && <div className={overlayClasses} />}
+      {swapPending && <div className="fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]" />}
 
       <SettingsModal title="Settings">
         <SettingsModalContent
