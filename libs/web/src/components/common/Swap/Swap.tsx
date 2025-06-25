@@ -77,7 +77,6 @@ const SwapRouteItem = memo(function SwapRouteItem({pool}: {pool: PoolId}) {
   );
 });
 
-
 const PreviewSummary = memo(function PreviewSummary({
   previewLoading,
   tradeState,
@@ -146,39 +145,19 @@ const PreviewSummary = memo(function PreviewSummary({
         )}
       </div>
     </div>
-  );
-});
-
-const PriceAndRate = memo(function PriceAndRate({
-  reservesPrice,
-  previewPrice,
-  swapState,
-}: {
-  reservesPrice: number | unknown;
-  previewPrice: number | undefined;
-  swapState: SwapState;
-}) {
-  return (
-    <div className="flex justify-between">
-      <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
-      <ExchangeRate swapState={swapState} />
-    </div>
-  );
+  )
 });
 
 export function Swap({isWidget}: {isWidget?: boolean}){
+  const isClient = useIsClient();
+  const initialSwapState = useInitialSwapState(isWidget);
+
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [CoinsModal, openCoinsModal, closeCoinsModal] = useModal();
   const [SuccessModal, openSuccess] = useModal();
   const [FailureModal, openFailure, closeFailureModal] = useModal();
-
-  const isClient = useIsClient();
-
-  const initialSwapState = useInitialSwapState(isWidget);
-
   const [swapState, setSwapState] = useState<SwapState>(initialSwapState);
-  const [inputsState, setInputsState] =
-    useState<InputsState>(initialInputsState);
+  const [inputsState, setInputsState] = useState<InputsState>(initialInputsState);
   const [activeMode, setActiveMode] = useState<CurrencyBoxMode>("sell");
   const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
@@ -496,17 +475,14 @@ export function Swap({isWidget}: {isWidget?: boolean}){
   ]);
 
   useEffect(() => {
-    if (!sellMetadata.decimals) {
-      setShowInsufficientBalance(false);
-      return;
-    }
     try {
-      const parsedSell = bn.parseUnits(sellValue || "0", sellMetadata.decimals);
-      const insufficient = sellBalance.lt(parsedSell);
-      setShowInsufficientBalance(insufficient);
-    } catch {
-      setShowInsufficientBalance(false);
-    }
+        const decimals = sellMetadata.decimals;
+        const parsedSell = bn.parseUnits(sellValue || "0", decimals);
+        const insufficient = sellBalance.lt(parsedSell);
+        setShowInsufficientBalance(insufficient);
+      } catch {
+        setShowInsufficientBalance(false);
+      }
   }, [sellValue, sellMetadata.decimals, sellBalance]);
 
   const feePercent = useMemo(() => {
@@ -616,8 +592,7 @@ export function Swap({isWidget}: {isWidget?: boolean}){
       tradeState === TradeState.REFETCHING ||
       (previewLoading && swapButtonTitle !== "Insufficient balance") ||
       (!amountMissing && !showInsufficientBalance && txCostPending)
-    );
-  }, [
+    )}, [
     balancesPending,
     tradeState,
     previewLoading,
@@ -625,17 +600,13 @@ export function Swap({isWidget}: {isWidget?: boolean}){
     amountMissing,
     showInsufficientBalance,
     txCostPending,
-  ]);
+  ])
 
-  if (!isClient) {
     return (
-      <div className="flex flex-col gap-3 lg:gap-4">
-        <Loader color="gray" />
-      </div>
-    );
-  }
-
-  return (
+    !isClient ?
+        <div className="flex flex-col gap-3 lg:gap-4">
+          <Loader color="gray" />
+        </div> :
     <>
       <div className="flex flex-col gap-3 lg:gap-4">
         <div
@@ -725,11 +696,10 @@ export function Swap({isWidget}: {isWidget?: boolean}){
           )}
         </div>
 
-        <PriceAndRate
-          reservesPrice={reservesPrice}
-          previewPrice={previewPrice}
-          swapState={swapState}
-        />
+        <div className="flex justify-between">
+          <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
+          <ExchangeRate swapState={swapState} />
+        </div>
       </div>
 
       {swapPending && <div className="fixed inset-0 w-full h-full backdrop-blur-[5px] z-[4]" />}
@@ -763,5 +733,4 @@ export function Swap({isWidget}: {isWidget?: boolean}){
         />
       </FailureModal>
     </>
-  );
-};
+  )}

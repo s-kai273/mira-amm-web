@@ -3,15 +3,15 @@ import CoinPair from "@/src/components/common/CoinPair/CoinPair";
 import Link from "next/link";
 import clsx from "clsx";
 import {PoolData} from "@/src/hooks/usePoolsData";
-import AprBadge from "@/src/components/common/AprBadge/AprBadge";
-import usePoolNameAndMatch from "@/src/hooks/usePoolNameAndMatch";
+import { AprBadge } from "@/src/components/common/AprBadge/AprBadge";
+import { usePoolNameAndMatch } from "@/src/hooks/usePoolNameAndMatch";
 import {Button} from "@/meshwave-ui/Button";
 import {TableCell, TableRow} from "@/meshwave-ui/table";
 
 const cellBase =
   "px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis text-center";
 
-const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
+export function DesktopPoolRow({poolData}: {poolData: PoolData}) {
   const {poolKey, aprValue, volumeValue, tvlValue, isStablePool, poolId} =
     usePoolDetails(poolData);
 
@@ -58,5 +58,3 @@ const DesktopPoolRow = ({poolData}: {poolData: PoolData}) => {
     </TableRow>
   );
 };
-
-export default DesktopPoolRow;

@@ -1,18 +1,16 @@
 import React, {useCallback} from "react";
-import {IconButton} from "@/src/components/common";
-import {LogoIcon} from "@/meshwave-ui/icons";
-import {PoolId, getLPAssetId} from "mira-dex-ts";
-import usePositionData from "@/src/hooks/usePositionData";
 import {formatUnits} from "fuels";
-import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
-import {useFormattedAddress} from "@/src/hooks";
+import {PoolId, getLPAssetId} from "mira-dex-ts";
 import {Copy} from "lucide-react";
+import {IconButton} from "@/src/components/common";
+import {usePositionData, useFormattedAddress} from "@/src/hooks";
+import {LogoIcon} from "@/meshwave-ui/icons";
 
-interface MiraBlockProps {
-  pool: PoolId;
-}
+import {DEFAULT_AMM_CONTRACT_ID} from "@/src/utils/constants";
 
-const MiraBlock = ({pool}: MiraBlockProps) => {
+export function MiraBlock({pool}: {
+  pool: PoolId
+}) {
   const {lpTokenBalance} = usePositionData({pool});
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
   const lpTokenAssetId = getLPAssetId(DEFAULT_AMM_CONTRACT_ID, pool);
@@ -37,5 +35,3 @@ const MiraBlock = ({pool}: MiraBlockProps) => {
     </div>
   );
 };
-
-export default MiraBlock;

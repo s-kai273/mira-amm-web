@@ -18,10 +18,7 @@ import {
 
 import {useModal} from "@/src/hooks";
 
-import {
-  DefaultSlippageValue,
-  SlippageMode,
-} from "@/src/components/common/Swap/Swap";
+import {SlippageMode} from "@/src/components/common/Swap/Swap";
 
 export default function AddLiquidityPage() {
   const router = useRouter();
@@ -32,7 +29,7 @@ export default function AddLiquidityPage() {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
   const [previewData, setPreviewData] =
     useState<AddLiquidityPreviewData | null>(null);
-  const [slippage, setSlippage] = useState<number>(DefaultSlippageValue);
+  const [slippage, setSlippage] = useState<number>(100);
   const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
 
   const handleBackClick = useCallback(() => {
