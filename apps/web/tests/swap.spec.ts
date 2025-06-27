@@ -1,13 +1,13 @@
-import {describe, it, test, expect, beforeEach, afterEach} from "vitest";
-import {Provider, bn} from "fuels";
-import {ReadonlyMiraAmm} from "../../../libs/mira-v1-ts/src/sdk/readonly_mira_amm";
-import {NetworkUrl, BASE_ASSETS} from "../../../libs/web/src/utils/constants";
-import {buildPoolId} from "../../../libs/mira-v1-ts/src/sdk/utils";
+import { describe, it, test, expect, beforeEach, afterEach } from "vitest";
+import { Provider, bn } from "fuels";
+import { ReadonlyMiraAmm } from "../../../libs/mira-v1-ts/src/sdk/readonly_mira_amm";
+import { NetworkUrl, BASE_ASSETS } from "../../../libs/web/src/utils/constants";
+import { buildPoolId } from "../../../libs/mira-v1-ts/src/sdk/utils";
 import {
   getSwapQuotesBatch,
   TradeType,
 } from "../../../libs/web/src/hooks/get-swap-quotes-batch";
-import type {Route} from "../../../libs/web/src/hooks";
+import type { Route } from "../../../libs/web/src/hooks";
 
 // ====================================
 // EACH PAIR BETWEEN 2 ASSETS: USDC/USDT
@@ -57,6 +57,13 @@ import type {Route} from "../../../libs/web/src/hooks";
 let testContext: any = null;
 
 describe("Swap Routes & Quotes (headless)", () => {
+
+  // Mock this
+  // const result = await this.ammContract.functions.pool_metadata(poolIdInput(poolId)).get();
+  // return specific values to confirm math
+  // observe what values are passed into it and how many times it is called
+  //
+
   beforeEach(() => {
     testContext = {
       amount: 20,
@@ -115,7 +122,7 @@ describe("Swap Routes & Quotes (headless)", () => {
     const FUEL = BASE_ASSETS[1];
     const poolId = buildPoolId(ETH, FUEL, false);
 
-    const route = {assetIn: ETH, assetOut: FUEL, pools: [{poolId}]} as Route;
+    const route = { assetIn: ETH, assetOut: FUEL, pools: [{ poolId }] } as Route;
 
     const quotes = await getSwapQuotesBatch(
       bn(testContext.amount),
